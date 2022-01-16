@@ -1,0 +1,334 @@
+//PROMPT:
+THREE NUMBER SUM:
+Write a function that takes in a non-empty array of distinct integers and an integer representing a target sum. The function should find all triplets in the array that sum up to the target sum and return a two-dimensional array of all these triplets. The numbers in each triplet should be ordered in ascending order, and the triplets themselves should be ordered in ascending order with respect to the numbers they hold. If no three numbers sum up to the target sum, the function should return an empty array.
+
+Sample Input:
+array = [12, 3, 1, 2 ,-6, 5, -8, 6]
+targetSum = 0;
+
+Sample Output:
+[[-8, 2, 6], [-8, 3, 5], [-6, 1 5]]
+
+
+//create a triplets result array, sort the original array into ascending order, by sorting the array we are setting up the foundation to use pointers to move through the array. By setting the left pointer to the number at the next index in the array and the right pointer to the last number in the array, we are able to move the pointers depending on the value of the current sum that we have with the three numbers.
+
+//then iterate using a for loop, starting at the first array index, and going until the array length minus two(the last point that the iteration is going to hit is the second to last index in the array), declare variables for the left and right.
+// for the left and the right, left is one plus the index, right begins at the last index of the array,
+// use a while loop to iterate through the array as long as the left is less than the right,
+// create a const variable that stores the currentSum, which is the current array number, the left, and the right,
+
+// generate conditionals --  if the currentsum is equal to the targetsum, then we want to push into our triplets results array, in order, array[i], array[left], array[right]
+// increment the left up by one, and also decrement the right down by one
+
+// else if the currentSum is less than the targetSum, we want to increment the left up,
+
+// else if the currentSum is greater than the targetSum, we want to decrement the right by one
+
+// escape the for loop and return the triplets results array
+
+// time complexity is O(N^2) space complexity is O(N) -- note that sorting the algorithm is not going to affect the overall space complexity of the algorithm
+
+function threeNumberSum(array, targetSum) {
+	const triplets = [];
+	array.sort((a,b) => a-b)
+	for (let i = 0; i < array.length-2; i++) {
+		let left = i + 1;
+		let right = array.length-1;
+		while(left < right) {
+			const currentSum = array[i] + array[left] + array[right];
+			if (currentSum === targetSum) {
+				triplets.push([array[i], array[left], array[right]]);
+				left++;
+				right--
+			} else if (currentSum < targetSum) {
+				left++
+			} else if (currentSum > targetSum) {
+				right--
+			}
+		}
+	}
+	return triplets;
+}
+
+
+PROMPT: Smallest difference
+Write a function that takes in two non-empty arrays of integers, finds the pair of numbers (one from each array) whose absolute difference is closest to zero, and returns an array containing these two numbers, with the number from the first array in the first position. Note that the absolute differnce of two integers is the distance between them on the real number line. For example, the absolute difference of -5 and 5 is 10, and the absolute difference of -5 and -4 is 1.
+
+Sample Input:
+arrayOne = [-1, 5, 10, 20, 28, 3]
+arrayTwo = [26, 134, 135, 15, 17]
+
+
+Sample Output:
+[28, 26]
+
+
+// generate an results array
+
+// iterate through the first array using a for loop, which stores the current array[i] as a variable;
+// nest a second for loop that goes through the second array, and determines the absolute difference of the two integers.
+
+// declare a variable that is called lowestSum;
+// set up your conditionals -- if abs(arrayOne[i] - arrayTwo[j]) < lowestSum, lowestSum = abs(arrayone[i] - arraytwo[j])
+
+function smallestDifference(arrayOne, arrayTwo) {
+let result = [];
+let lowestSUm = Infinity;
+for ( let i = 0; i < arrayOne.length; i++) {
+  for ( let j = 0; j < arrayTwo.length; j++) {
+			if ((Math.abs(arrayOne[i] - arrayTwo[j])) < lowestSum) {
+				lowestSum = Math.abs(arrayOne[i] - arrayTwo[j])
+				result.push([arrayOne[i],arrayTwo[j]])
+			} else {
+				continue;
+			}
+		}
+	}
+	return result[result.length-1];
+}
+
+
+PROMPT: Move Element to End
+//You're given an array of integers an an integer. Write a function that moves all instances of that integer in the array to the end of the array and returns the array. The function should perform this in place (i.e., it should mutate the input array) and doesnt need to maintain the order of the other integers.
+
+Sample Input:
+array = [2, 1, 2, 2, 2, 3, 4, 2]
+toMove = 2
+
+Sample Output:
+[1, 3, 4, 2, 2, 2, 2, 2]
+
+// iterate through the array, if the
+
+
+PROMPT: Monotonic array
+// Write a function that takes in an array of integers and returns a boolean representing whether the array is monotonic.
+// An array is said to be monotonic if it's elements, from left to right, are entirely non-increasing or entirely non-decreasing. Non-increasing elements aren't necessarily exclusively decreasing; they simply don't increase. Similarly, non-decreasing elements aren't necessarily exclusively increasing; they simply don't decrease.
+
+// we want to generate conditionals that will toggle when we iterate through the array.
+// use a for loop that will store the current number as well as the next number
+
+// if the next number is less than the current number, then we will toggle our decreasing toggle to be true.
+// if the next number is greater than the current number, then we will toggle our increasing toggle to be true.
+
+// since we want to see if it is monotonic, that means that there must only be one true value, either when they are all increasing or all decreasing.
+
+// when we escape our loop, if the toggles are of different values, meaning one is true and one is false, then we can return true,
+// else, if the toggles are both true, then we can return false
+
+function isMonotonic(array) {
+  // Write your code here.
+	if (array.length <= 2) return true;
+
+	let decreasing = false;
+	let increasing = false;
+	for ( let i = 0; i < array.length; i++) {
+		let next = array[i+1]
+		if (next < array[i]) {
+			decreasing = true;
+		} else if (next > array[i]) {
+			increasing = true;
+		}
+	}
+	if (decreasing === true && increasing === true) {
+		return false
+	} else return true
+}
+
+//PROMPT: SPIRAL TRAVERSAL OF A TWO DIMENSIONAL ARRAY
+// Write a function that takes in an 'n x m' two-dimensional array (that can be square-shaped when n == m) and returns a one-dimensional array of all the array's elements in spiral order.
+// Spiral order starts at the top left corner of the array, goes to the right, and proceeds in a spiral pattern all the way until every element has been visited.
+
+// Sample Input:
+// array = [
+//   [1,   2, 3, 4],
+//   [12, 13, 14, 5],
+//   [11, 16, 15, 6],
+//   [10,  9,  8, 7]
+// ]
+
+// Sample Output:
+// [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+
+// we want to think of the traversal of the 2d array as a collection of perimeters that consecutively get smaller with each layer until we reach the center.
+
+// declare variables to direct the course of the perimeter traversal.
+// starting row, ending row, starting column, ending column
+// iterating through the top row is as simple as a for loop, going through the columns, adding in the value to our result array as we go along.
+
+function spiralTraverse(array) {
+	let startRow = 0
+	let endRow = array.length-1
+	let startCol = 0
+	let endCol = array[0].length-1
+	let result = [];
+	while(startRow <= endRow && startCol <= endCol) {
+		for ( let col = startCol; col <= endCol; col++) {
+			result.push(array[startRow][col])
+		} for (let row = startRow +1; row <= endRow; row++) {
+			result.push(array[row][endCol])
+		} for ( let col = endCol -1; col >= startCol; col--) {
+			if (startRow === endRow) break;
+			result.push(array[endRow][col])
+		} for (let row = endRow - 1; row > startRow; row--) {
+			if (startCol === endCol) break;
+			result.push(array[row][startCol])
+		}
+		startRow++;
+		endRow--;
+		startCol++;
+		endCol--
+	}
+	return result;
+}
+
+
+PROMPT: LONGEST PEAK
+// Write a function that takes in an array of integers and returns the length of the longest peak in the array.
+
+// A peak is defined as adjacent integers in the array that are strictly increasing until they reach a tip (the highest value in the peak), at which point they become strictly decreasing. At least three integers are required to form a peak.
+
+// For example, the integers 1, 4, 10, 2 form a peak, but the integers 4, 0, 10 don't and neither do the integers 1, 2, 2, 0. Simiarly, the integers 1, 2, 3 don't form a peak because there aren't any strictly decreasing integers after the three.
+
+// Sample input:
+// array = [1,2,3,3,4,0,10,6,5,-1,-3,2,3]
+
+// Sample output:
+// 6 // 0, 10, 6, 5, -1, -3
+
+// //we do not need to sort, maybe create pointers for the increasing and decreasing values
+// // declare variables for the current and the next values,
+// // keep track of the length
+
+//approach: we are looking for the longest peak, which implies that we first have to find all the peaks in the given array and then once we have all of them, find the longest one.
+
+// we should separate the problem into two tasks -- one, which is to find all of the peaks, and two, which is to determine which one is the longest.
+
+// to represent a peak, it has to be strictly greater than the two adjacent values next to it. This is the 'tip'. we don't know how long the peak is yet but we've found one.
+
+// finding a peak is easy, we iterate through the array, and then we compare it to the two adjacent integers that are bordering it.
+
+// once we have found peaks, we then have to determine how fa out left or how far out right we can extend it. We have to check each number and see if it is either exclusively decreasing or increasing. Once it is not, we have reached the end of the peak.
+
+function longestPeak(array) {
+  let longestPeak = 0;
+  let i = 0;
+  while( i < array.length-1) {
+    let current = array[i];
+    let next = array[i+1];
+    let start = array[i-1];
+    const isPeak = start < current && next < current
+    if (!isPeak) {
+      i++;
+      continue;
+    }
+    let leftIdx = i-2;
+    while (leftIdx >= 0 && array[leftIdx] < array[leftIdx + 1]) {
+      leftIdx--;
+    }
+    let rightIdx = i+2;
+    while ( rightIdx < array.length && array[rightIdx] < array[rightIdx -1]) {
+      rightIdx++
+    }
+    const currentPeak = rightIdx - leftIdx -1;
+    longestPeak = Math.max(longestPeak, currentPeak);
+    i = rightIdx
+  }
+  return longestPeak
+}
+
+
+// PROMPT: array of products
+// Write a fuction that takes in a non-empty array of integers and returns an array of the same length, where each element in the output array is equal to the product of every other number in the input array. In other words, the value at output[i] is equal ot theproduct of every number in the input array other than input[i]. Note that you're expected to solve this problem without using division.
+
+// Sample input:
+// array = [5,1,4,2]
+
+// Sample output:
+// [0, 40, 10, 20]
+// 8 is equal to 1 x 4 x 2
+// 40 is equal to 5 x 4 x 2
+// 10 is equal to 5 x 1 x 2
+// 20 is equal to 5 x 1 x 4
+
+
+// we want to find the number that we are including, and the numbers that we are excluding
+// to find the number that we are including, it would be the array[i]// use an array method that removes the single number from the array,
+//take the remaining numbers from the array, multiply all, and then push into a results array
+
+function arrayOfProducts(array) {
+  let result = [];
+  for ( let i =0; i < array.length; i++) {
+    let shifted = array.shift();
+    result.push(array.reduce((a,b) => a*b));
+    array.push(shifted)
+  }
+  return result;
+}
+
+// PROMPT: FIRST DUPLICATE VALUE
+// Given an array of integers between 1 and n, inclusive, where n is the length of the array, write a functino that returns the first integer that appears more than once (when the array is read from left to right).
+
+// In other words, out of all the integers that might occur more that once in the input array, your function should return the one whose first duplicate value has the minimum index.
+
+// If no integer appears more than once, your function should return -1.
+
+// Note that you're allowed to mutate the input array.
+
+function firstDuplicateValue(array) {
+  let lowestIndex = Infinity;
+  for (let i = 0 ; i < array.length-1; i++) {
+		let parent = array[i];
+		for ( let j = i+1; j < array.length; j++) {
+			let child = array[j]
+			if (parent === child && j < lowestIndex) {
+				lowestIndex = j
+			}
+		}
+	}
+	return lowestIndex === Infinity? -1: array[lowestIndex]
+}
+
+// PROMPT MERGE OVERLAPPING INTEVALS
+// Write a function that takes in a non-empty array of arbitrary intervals. merges any overlapping intervals, and returns the new intervals in no particular order. Each interval 'interval' is an array of two integers, with interval[0] as the start of the interval and interval[1] as the start of the interval and interval[1] as the end of the interval.
+
+// Note back to back intervals arent considered to be overlapping. For example, [1,5] and [6,7] aren't overlapping; however, [1,6] and [6,7] are indeed overlapping.
+
+// Also note that the start of any particular interval will always be less than or equal to the end of that interval.
+
+// Sample Input:
+// intervals = [[1,2], [3,5], [4,7], [6,8], [9,10]];
+
+// Sample Output:
+// [[1,2], [3,8], [9,10]]
+// Merge the intervals [3,5], [4,7], and [6,8]. The intervals could be ordered differently.
+
+// // intervals are overlapping when the last integer in the interval, considered interval[1] is >= interval[0] of the next interval;
+
+// first we should sort the intervals array in ascending order by the first value of each interval.
+
+// we need to find the values of the current interval, and then the next interval following.
+
+// we need to grab the second value of the first interval, and compare it to the first value of the second interval.
+
+// if the second value of the first is >= the first value of the second, then we want to grab the first value of the first and store it in an interval value, we then find the greatest ending value of either the first or the second interval and that is now the second stored value.
+
+function mergeOverlappingIntervals(array) {
+  let sortedIntervals = array.sort((a,b) => a[0]-b[0])
+  let mergedIntervals = [];
+  let currentInterval = sortedIntervals[0];
+  mergedIntervals.push(currentInterval);
+
+  for (const nextInterval of sortedIntervals) {
+    const [_, currentIntervalEnd] = currentInterval;
+    const [nextIntervalStart, nextIntervalEnd] = nextInterval;
+
+    if (currentIntervalEnd >= nextIntervalStart) {
+      currentInterval[1] = Math.max(currentIntervalEnd, nextIntervalEnd)
+    } else {
+      currentInterval = nextInterval;
+      mergedIntervals.push(currentInterval)
+    }
+  }
+  return mergedIntervals
+}
