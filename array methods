@@ -357,5 +357,26 @@ Sample Output:
 // Inside this loop, loop through the input array again, starting at the index of the first loop. At each iteration, calculate the difference between the target sum and the sum of the two numbers represented by the indices of the for loops. If that difference is in the hash table that you're building, then valid quadruplets can be formed by combining the current pair of numbers with each pair stored in the hash table tat the difference just calculated. Following this nested for loop, loop through the array again this time arting at the index zero all the way to the index of the first for loop. At each iteration, calculate the sum of the two numbers represented by the indices of the for loops and add it to the hash table if it isn't already there; then add the pair of indices to the array that the sum in the table maps to.
 
 function fourNumberSum(array, targetSum) {
-
+const allPairSums = {};
+const quadruplets = [];
+for ( let i = 1; i < array.length -1; i++) {
+  for ( let j = i+1; j < array.length; j++) {
+    const currentSum = array[i] + array[j];
+    const difference = targetSum - currentSum;
+    if (difference in allPairSums) {
+      for (const pair of allPairSums[difference]) {
+        quadruplets.push(pair.concat([array[i], array[j]]))
+      }
+    }
+  }
+  for ( let k = 0; k < i; k++) {
+    const currentSum = array[i] + array[k];
+    if (!(currentSum in allPairSums)) {
+      allPairSums[currentSum] = [[array[k], array[i]]]
+    } else {
+      allPairSums[currentSum].push(array[k], array[i])
+    }
+  }
+}
+return quadruplets
 }
