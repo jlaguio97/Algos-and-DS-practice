@@ -374,7 +374,7 @@ for ( let i = 1; i < array.length -1; i++) {
     if (!(currentSum in allPairSums)) {
       allPairSums[currentSum] = [[array[k], array[i]]]
     } else {
-      allPairSums[currentSum].push(array[k], array[i])
+      allPairSums[currentSum].push([array[k], array[i]])
     }
   }
 }
