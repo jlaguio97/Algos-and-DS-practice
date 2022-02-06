@@ -1,0 +1,34 @@
+// Prompt: Write a function that takes in an array of positive integers and returns the maximum sum of non-adjacent elements in the array. If the input array is empty, the function should return 0.
+
+// Sample Input:
+// array = [75, 205, 120, 75, 90, 135];
+
+// Sample Output:
+// 330 // 75 + 120 + 135
+
+// Approach: We want to iterate through the array and keep track of the current sum that we have between our current number, and the number that is positioned at the next non-adjacent index.
+
+
+// Hints:
+// 1. Try building an array of the same length as the input array. At each index in this new array, store the maximum sum that can be generated using no adjacent numbers located between index 0 and the current index.
+
+function maxSumsetSumNoAdjacent(array) {
+  // first, we want to take care of our edge cases
+  if (array.length === 0) {
+    return 0;
+    // if the array only has a single integer, return only that integer
+  } else if (array.length === 1) {
+    return array[0];
+  } else {
+    // else, we want to declare our maxSums variable, which is a copy of the array. This is good because it will generate an array that is the same size as our original array.
+    let maxSums = array.slice();
+    // the second value in our maxSUms array is the greater value of the first two in the original array
+    maxSums[1] = Math.max(array[0], array[1]);
+    // then we want to iterate through the original array, starting at the second index (the third number), and for each iteration we want to use the following equation. Note that we want to start at i=2 since we already declared the first two integers in the array as constant values.
+    for (let i = 2; i < array.length; i++) {
+      maxSums[i] = Math.max(maxSums[i - 1], maxSums[i - 2] + array[i]);
+    }
+    // finally, what we want to return as our answer is the last integer in the array as it is an ascending running order of the maxSums.
+    return maxSums[maxSums.length - 1];
+  }
+}
